@@ -9,7 +9,10 @@ let snareSound: HTMLAudioElement;
 let boomSound: HTMLAudioElement;
 
 const channel1: any[] = [];
+
+
 appStart();
+
 
 function appStart() {
     document.addEventListener('keypress', onKeyPress);
@@ -18,8 +21,10 @@ function appStart() {
     getAudioElements();
 }
 function onPlayChannel1(): void {
+    let prevTime = 0;
     channel1.forEach(sound => {
-        setTimeout(() => playSound(sound.key), sound.time)
+        const timeout = sound.time - prevTime;
+        setTimeout(() => playSound(sound.key), timeout)
     })
 
 }
