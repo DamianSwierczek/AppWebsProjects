@@ -1,3 +1,11 @@
+.keys {
+  display: flex;
+  flex: 1;
+  min-height: 10vh;
+  align-items: center;
+  justify-content: center;
+}
+
 .key {
     border: .4rem solid black;
     border-radius: .5rem;
@@ -11,3 +19,9 @@
     background: rgba(0,0,0,0.4);
     text-shadow: 0 0 .5rem black;
   }
+
+  .buttons1, .buttons2, .buttons3, .buttons4 {
+    display: flex;
+    justify-content: center;
+  }
+
