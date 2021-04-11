@@ -10,6 +10,7 @@ let boomSound: HTMLAudioElement;
 
 const channel1: any[] = [];
 
+let ifRecord1: boolean = false;
 
 appStart();
 
@@ -18,6 +19,10 @@ function appStart() {
     document.addEventListener('keypress', onKeyPress);
     const btnPlayChannel1 = document.querySelector('#playChannel1')
     btnPlayChannel1.addEventListener('click', onPlayChannel1);
+    const btnRecord1 = document.querySelector('#record1')
+    btnRecord1.addEventListener('click', e => {
+        ifRecord1 = true;
+    })
     getAudioElements();
 }
 function onPlayChannel1(): void {
@@ -46,7 +51,9 @@ function onKeyPress(ev: KeyboardEvent): void {
     const key = ev.key;
     const time = ev.timeStamp;
 
+    if(ifRecord1) {
     channel1.push({ key, time })
+    }
 
     playSound(key);
     console.log(channel1);
