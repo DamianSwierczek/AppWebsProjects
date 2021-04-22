@@ -1,10 +1,12 @@
 export class App {
     opwApiKey = '2448f79ab7ef19286e20b80ec7d4da35';
-    constructor() {
-        this.getCityInfo('zakopane')
+    cityName: string;
+    constructor(cityName: string) {
+        this.cityName = cityName;
     }
+
     async getCityInfo(city: string) {
-        const weather = await this.getWeather('zakopane');
+        const weather = await this.getWeather(city);
         this.saveData(weather);
     }
     async getWeather(city: string): Promise<any> {
@@ -14,7 +16,7 @@ export class App {
         console.log(weatherData);
         return weatherData;
     }
-    saveData(data: any) {
+    saveData(data: any []) {
         localStorage.setItem('weatherData', JSON.stringify(data));
     }
     getData() {
