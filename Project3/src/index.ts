@@ -15,10 +15,10 @@ document.getElementById("addCityButton").addEventListener("click", () => {
         nameElement.innerHTML = data.name;
 
         const pressureElement = document.createElement("p");
-        pressureElement.innerHTML = data.main.pressure;
+        pressureElement.innerHTML = data.main.pressure +" hPa";
 
         const tempElement = document.createElement("p");
-        tempElement.innerHTML = data.main.temp;
+        tempElement.innerHTML = data.main.temp+" °C";
         
         const cloudElement = document.createElement("p");
         cloudElement.innerHTML = data['weather'][0]['main'];
@@ -46,10 +46,10 @@ document.getElementById("addCityButton").addEventListener("click", () => {
         nameElement.innerHTML = cities[0].name;
 
         const pressureElement = document.createElement("p");
-        pressureElement.innerHTML = cities[0].main.pressure;
+        pressureElement.innerHTML = cities[0].main.pressure +" hPa";
 
         const tempElement = document.createElement("p");
-        tempElement.innerHTML = cities[0].main.temp;
+        tempElement.innerHTML = cities[0].main.temp + " °C";
         
         const cloudElement = document.createElement("p");
         cloudElement.innerHTML = cities[0]['weather'][0]['main'];
@@ -62,7 +62,7 @@ document.getElementById("addCityButton").addEventListener("click", () => {
         document.getElementsByClassName("flexContainer")[0].appendChild(containerElement);
 
 
-        const cities1 = {} as any;
-        cities1.cityName = "testtt";
+        // const cities1 = {} as any;
+        // cities1.cityName = "testtt";
 
 }) ();
