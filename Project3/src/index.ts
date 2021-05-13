@@ -1,7 +1,7 @@
 import { App } from './app';
 import './main.scss';
 
-const citiesInfo = [] as any[];
+let citiesInfo = [] as any [];
 
 document.getElementById("addCityButton").addEventListener("click", () => {
     let cityName = (document.getElementById("inputCityButton") as HTMLInputElement).value;
@@ -38,21 +38,23 @@ document.getElementById("addCityButton").addEventListener("click", () => {
 
 (function (){
 
-    const cities = JSON.parse(localStorage.getItem('weatherData'));
-    console.log(cities);
-    const containerElement = document.createElement("div");
+    citiesInfo = JSON.parse(localStorage.getItem('weatherData'));
+    console.log(citiesInfo);
+    citiesInfo.forEach((element, index) => {
+
+        const containerElement = document.createElement("div");
         containerElement.className = "weatherContainer";
         const nameElement = document.createElement("p");
-        nameElement.innerHTML = cities[0].name;
+        nameElement.innerHTML = citiesInfo[index].name;
 
         const pressureElement = document.createElement("p");
-        pressureElement.innerHTML = cities[0].main.pressure +" hPa";
+        pressureElement.innerHTML = citiesInfo[index].main.pressure +" hPa";
 
         const tempElement = document.createElement("p");
-        tempElement.innerHTML = cities[0].main.temp + " °C";
+        tempElement.innerHTML = citiesInfo[index].main.temp + " °C";
         
         const cloudElement = document.createElement("p");
-        cloudElement.innerHTML = cities[0]['weather'][0]['main'];
+        cloudElement.innerHTML = citiesInfo[index]['weather'][0]['main'];
 
         // pressureelement.className = "classname";
         containerElement.appendChild(nameElement);
@@ -61,6 +63,8 @@ document.getElementById("addCityButton").addEventListener("click", () => {
         containerElement.appendChild(cloudElement);
         document.getElementsByClassName("flexContainer")[0].appendChild(containerElement);
 
+    })
+    
 
         // const cities1 = {} as any;
         // cities1.cityName = "testtt";
