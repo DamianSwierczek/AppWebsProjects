@@ -38,7 +38,9 @@ document.getElementById("addCityButton").addEventListener("click", () => {
         app.saveData(citiesInfo);
     });
 
-    // localStorage.removeItem("weatherData");
+    document.getElementById("deleteWeathers").addEventListener("click", () => {
+    localStorage.removeItem("weatherData");
+    }
 });
 
 (function (){
