@@ -30,7 +30,7 @@ document.getElementById("addCityButton").addEventListener("click", () => {
         containerElement.appendChild(cloudElement);
         document.getElementsByClassName("flexContainer")[0].appendChild(containerElement);
         console.log(data);
-        console.log("dupa",citiesInfo);
+        console.log(citiesInfo);
         if(!citiesInfo){
             citiesInfo = [];
         }
