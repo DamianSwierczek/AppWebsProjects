@@ -19,4 +19,4 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
     document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
 
-}
+})
