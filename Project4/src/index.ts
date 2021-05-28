@@ -1,3 +1,7 @@
+import './main.scss';
+
+let citiesInfo = [] as any [];
+
 document.getElementById("addNoteButton").addEventListener("click", () => {
 
     let noteTitle = (document.getElementById("inputTitle") as HTMLInputElement).value;
