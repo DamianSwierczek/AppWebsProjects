@@ -37,10 +37,11 @@ document.getElementById("addCityButton").addEventListener("click", () => {
         citiesInfo.push(data);
         app.saveData(citiesInfo);
     });
+  
+});
 
-    document.getElementById("deleteWeathers").addEventListener("click", () => {
+document.getElementById("deleteWeathers").addEventListener("click", () => {
     localStorage.removeItem("weatherData");
-    }
 });
 
 (function (){
@@ -74,7 +75,5 @@ document.getElementById("addCityButton").addEventListener("click", () => {
         })
     
     }
-        // const cities1 = {} as any;
-        // cities1.cityName = "testtt";
 
 }) ();
