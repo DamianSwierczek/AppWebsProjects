@@ -3,8 +3,6 @@ import {Note} from './model/Note';
 import {Notes} from './model/Notes';
 import {AppStorage} from './model/AppStorage';
 
-// let weather = [] as any [];
-
 
 let notes = new Notes();
 
@@ -24,8 +22,16 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    const contentElement = document.createElement("p");
    contentElement.innerHTML = noteContent;
 
+   const deleteElement = document.createElement("button");
+   deleteElement.innerHTML = "X";
+
+   const editElement = document.createElement("button");
+   editElement.innerHTML = "E";
+
    containerElement.appendChild(titleElement);
     containerElement.appendChild(contentElement);
+    containerElement.appendChild(deleteElement);
+    containerElement.appendChild(editElement);
 
     const note = new Note(noteTitle, noteContent, false);
 
@@ -41,6 +47,7 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
     document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
 
 });
+
 
 (function (){
 
