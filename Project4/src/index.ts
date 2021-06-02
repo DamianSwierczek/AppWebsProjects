@@ -23,6 +23,7 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    contentElement.innerHTML = noteContent;
 
    const deleteElement = document.createElement("button");
+   deleteElement.className = "deleteButton";
    deleteElement.innerHTML = "X";
 
    const editElement = document.createElement("button");
