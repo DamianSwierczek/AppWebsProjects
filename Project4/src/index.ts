@@ -5,6 +5,7 @@ import {AppStorage} from './model/AppStorage';
 
 
 let notes = new Notes();
+const appStorage = new AppStorage(notes);
 
 document.getElementById("addNoteButton").addEventListener("click", () => {
 
@@ -16,10 +17,10 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    const containerElement = document.createElement("div");
    containerElement.className = "noteContainer";
 
-   const titleElement = document.createElement("p");
+   const titleElement = document.createElement("text");
    titleElement.innerHTML = noteTitle;
 
-   const contentElement = document.createElement("p");
+   const contentElement = document.createElement("textArea");
    contentElement.innerHTML = noteContent;
 
    const deleteElement = document.createElement("button");
@@ -51,10 +52,21 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
     appStorage.saveToLocalStorage();
 
-    document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
-
 });
 
+// document.getElementById("deleteButton").addEventListener("click", () => {
+//     appStorage.getData().splice(index,1);
+// localStorage.setItem('notesData', JSON.stringify(appStorage.getData()));
+
+// });
+
+// function getRndColor() {
+//     return 'hsl(' + (360 * Math.random()) + ',50%,50%)'; // H,S,L
+// }
+
+// document.getElementById("generateColor").addEventListener('click', () => {
+
+// });
 
 (function (){
 
@@ -64,10 +76,10 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
             const containerElement = document.createElement("div");
             containerElement.className = "noteContainer";
-            const titleElement = document.createElement("p");
+            const titleElement = document.createElement("text");
             titleElement.innerHTML = element.title;
 
-            const contentElement = document.createElement("p");
+            const contentElement = document.createElement("textArea");
             contentElement.innerHTML = element.content;
 
             const deleteElement = document.createElement("button");
