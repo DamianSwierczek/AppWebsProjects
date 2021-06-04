@@ -27,12 +27,18 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    deleteElement.innerHTML = "X";
 
    const editElement = document.createElement("button");
+   editElement.className = "editButton";
    editElement.innerHTML = "E";
+
+   const generateColor = document.createElement("button");
+   generateColor.className = "generateColorButton";
+   generateColor.innerHTML = "G";
 
    containerElement.appendChild(titleElement);
     containerElement.appendChild(contentElement);
     containerElement.appendChild(deleteElement);
     containerElement.appendChild(editElement);
+    containerElement.appendChild(generateColor);
 
     const note = new Note(noteTitle, noteContent, false);
 
@@ -63,8 +69,24 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
             const contentElement = document.createElement("p");
             contentElement.innerHTML = element.content;
+
+            const deleteElement = document.createElement("button");
+            deleteElement.className = "deleteButton";
+            deleteElement.innerHTML = "X";
+         
+            const editElement = document.createElement("button");
+            editElement.className = "editButton";
+            editElement.innerHTML = "E";
+         
+            const generateColor = document.createElement("button");
+            generateColor.className = "generateColorButton";
+            generateColor.innerHTML = "G";
+
             containerElement.appendChild(titleElement);
             containerElement.appendChild(contentElement);
+            containerElement.appendChild(deleteElement);
+            containerElement.appendChild(editElement);
+            containerElement.appendChild(generateColor);
       
             document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
 
