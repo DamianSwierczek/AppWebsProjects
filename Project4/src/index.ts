@@ -13,6 +13,9 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
    let noteContent = (document.getElementById("inputContent") as HTMLInputElement).value;
 
+   if(!notes){
+    notes = new Notes();
+}
    
    const containerElement = document.createElement("div");
    containerElement.className = "noteContainer";
@@ -26,10 +29,14 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    const deleteElement = document.createElement("button");
    deleteElement.className = "deleteButton";
    deleteElement.innerHTML = "X";
+   deleteElement.id = "deleteButton" + notes.getNotes().length;
 
    const editElement = document.createElement("button");
    editElement.className = "editButton";
    editElement.innerHTML = "E";
+   editElement.id = "editButton" + notes.getNotes().length;
+
+   editElement.addEventListener("click", name);
 
    const generateColor = document.createElement("button");
    generateColor.className = "generateColorButton";
@@ -43,16 +50,27 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
     const note = new Note(noteTitle, noteContent, false);
 
-    if(!notes){
-        notes = new Notes();
-    }
+   
     notes.addNote(note);
 
     const appStorage = new AppStorage(notes);
 
     appStorage.saveToLocalStorage();
 
+    document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
+
+
 });
+function name(this: HTMLElement) {
+    console.log(this);
+    let index = this.id.replace("editButton","");
+    console.log(index);
+}
+//  const editNoteFunction = (this: HTMLElement) => {
+
+// console.log(this);
+
+//  }
 
 // document.getElementById("deleteButton").addEventListener("click", () => {
 //     appStorage.getData().splice(index,1);
@@ -70,12 +88,18 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
 (function (){
 
-    notes = JSON.parse(localStorage.getItem('notesData')) as Notes;
+   let notesFromStorage = JSON.parse(localStorage.getItem('notesData')) as Notes;
+
+  notes = new Notes();
+
+    Object.assign(notes , notesFromStorage);
+
     if(notes){
-        notes.notesArray.forEach((element) => {
+        notes.getNotes().forEach((element, index) => {
 
             const containerElement = document.createElement("div");
             containerElement.className = "noteContainer";
+
             const titleElement = document.createElement("text");
             titleElement.innerHTML = element.title;
 

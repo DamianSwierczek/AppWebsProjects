@@ -8,8 +8,11 @@ body {
   margin-top: 10px;
   display: inline-block;
   margin-right: 1px;
+  word-wrap: break-word;
 }
 
-.deleteButton {
-  margin-right: 75.1%;
+textarea {
+width: 194px;
+resize: none;
+min-height: 100px;
 }
