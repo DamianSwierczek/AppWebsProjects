@@ -6,6 +6,7 @@ import {AppStorage} from './model/AppStorage';
 
 let notes = new Notes();
 const appStorage = new AppStorage(notes);
+let currentColor: string;
 
 document.getElementById("addNoteButton").addEventListener("click", () => {
 
@@ -19,6 +20,7 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    
    const containerElement = document.createElement("div");
    containerElement.className = "noteContainer";
+   containerElement.id = "noteContainerID" + notes.getNotes().length;
 
    const titleElement = document.createElement("text");
    titleElement.innerHTML = noteTitle;
@@ -44,7 +46,8 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    const generateColor = document.createElement("button");
    generateColor.className = "generateColorButton";
    generateColor.innerHTML = "G";
-
+   generateColor.id = "generateColor" + notes.getNotes().length;
+   generateColor.addEventListener("click", get_rand_color);
 
    const dateOfCreation = document.createElement("p");
     let today = new Date();
@@ -62,7 +65,7 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
     containerElement.appendChild(generateColor);
     containerElement.appendChild(dateOfCreation);
 
-    const note = new Note(noteTitle, noteContent, false, today);
+    const note = new Note(noteTitle, noteContent, false, today, currentColor);
 
    
     notes.addNote(note);
@@ -94,23 +97,20 @@ function editNote(this: HTMLElement) {
 }
 //  const editNoteFunction = (this: HTMLElement) => {
 
-// console.log(this);
-
 //  }
 
-// document.getElementById("deleteButton").addEventListener("click", () => {
-//     appStorage.getData().splice(index,1);
-// localStorage.setItem('notesData', JSON.stringify(appStorage.getData()));
-
-// });
-
-// function getRndColor() {
-//     return 'hsl(' + (360 * Math.random()) + ',50%,50%)'; // H,S,L
-// }
-
-// document.getElementById("generateColor").addEventListener('click', () => {
-
-// });
+function get_rand_color(this: HTMLElement)
+{
+    let index = this.id.replace("generateColor","");
+    
+    let color = Math.floor(Math.random() * Math.pow(256, 3)).toString(16);
+    while(color.length < 6) {
+        color = "0" + color;
+    }
+    notes.notesArray[+index].color = color;
+    localStorage.setItem('notesData', JSON.stringify(notes.getNotes()));
+    document.getElementById("noteContainerID" + index).style.backgroundColor = "#" + color;
+}
 
 (function (){
 
@@ -125,6 +125,7 @@ function editNote(this: HTMLElement) {
 
             const containerElement = document.createElement("div");
             containerElement.className = "noteContainer";
+            containerElement.style.backgroundColor = notes.getNotes()[index].color;
 
             const titleElement = document.createElement("text");
             titleElement.innerHTML = element.title;
@@ -140,7 +141,6 @@ function editNote(this: HTMLElement) {
             const editElement = document.createElement("button");
             editElement.className = "editButton";
             editElement.innerHTML = "E";
-            editElement.addEventListener("click", editNote);
          
             const generateColor = document.createElement("button");
             generateColor.className = "generateColorButton";
