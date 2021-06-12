@@ -47,7 +47,7 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    generateColor.className = "generateColorButton";
    generateColor.innerHTML = "G";
    generateColor.id = "generateColor" + notes.getNotes().length;
-   generateColor.addEventListener("click", get_rand_color);
+   generateColor.addEventListener("click", getRandColor);
 
    const dateOfCreation = document.createElement("p");
     let today = new Date();
@@ -83,8 +83,10 @@ function deleteNote(this: HTMLElement) {
     console.log(this);
     let index = this.id.replace("deleteButton","");
     notes.getNotes().splice(+index,1);
-    localStorage.setItem('notesData', JSON.stringify(notes.getNotes()));
+    const appStorage = new AppStorage(notes);
+    appStorage.saveToLocalStorage();
     console.log(index);
+    window.location.reload();
 
 }
 
@@ -93,22 +95,21 @@ function editNote(this: HTMLElement) {
     let noteContent = (document.getElementById("contentID" + index) as HTMLInputElement).value;
     console.log(index);
     notes.getNotes()[+index].content = noteContent;
-    localStorage.setItem('notesData', JSON.stringify(notes.getNotes()));
+    const appStorage = new AppStorage(notes);
+    appStorage.saveToLocalStorage();
 }
-//  const editNoteFunction = (this: HTMLElement) => {
 
-//  }
-
-function get_rand_color(this: HTMLElement)
+function getRandColor(this: HTMLElement)
 {
     let index = this.id.replace("generateColor","");
-    
     let color = Math.floor(Math.random() * Math.pow(256, 3)).toString(16);
     while(color.length < 6) {
         color = "0" + color;
     }
     notes.notesArray[+index].color = color;
-    localStorage.setItem('notesData', JSON.stringify(notes.getNotes()));
+    // localStorage.setItem('notesData', JSON.stringify(notes.getNotes()));
+    const appStorage = new AppStorage(notes);
+    appStorage.saveToLocalStorage();
     document.getElementById("noteContainerID" + index).style.backgroundColor = "#" + color;
 }
 
@@ -116,7 +117,9 @@ function get_rand_color(this: HTMLElement)
 
    let notesFromStorage = JSON.parse(localStorage.getItem('notesData')) as Notes;
 
-  notes = new Notes();
+    notes = new Notes();
+
+    console.log(notes);
 
     Object.assign(notes , notesFromStorage);
 
@@ -125,26 +128,37 @@ function get_rand_color(this: HTMLElement)
 
             const containerElement = document.createElement("div");
             containerElement.className = "noteContainer";
-            containerElement.style.backgroundColor = notes.getNotes()[index].color;
+            containerElement.id = "noteContainerID" + index;
 
             const titleElement = document.createElement("text");
             titleElement.innerHTML = element.title;
+            titleElement.id = "titleID" + index;
+
 
             const contentElement = document.createElement("textArea");
             contentElement.innerHTML = element.content;
+            contentElement.id = "contentID" + index;
 
             const deleteElement = document.createElement("button");
             deleteElement.className = "deleteButton";
             deleteElement.innerHTML = "X";
-            
+            deleteElement.id = "deleteButton" + index;
+            deleteElement.addEventListener("click", deleteNote);
          
             const editElement = document.createElement("button");
             editElement.className = "editButton";
             editElement.innerHTML = "E";
+            editElement.id = "editButton" + index;
+            editElement.addEventListener("click", editNote);
          
             const generateColor = document.createElement("button");
             generateColor.className = "generateColorButton";
             generateColor.innerHTML = "G";
+            generateColor.id = "generateColor" + index;
+            generateColor.addEventListener("click", getRandColor);
+            let color =  notes.getNotes()[index].color;
+            
+            
 
             const dateOfCreation = document.createElement("p");
             let today = notes.getNotes()[index].date;
@@ -157,11 +171,12 @@ function get_rand_color(this: HTMLElement)
             containerElement.appendChild(editElement);
             containerElement.appendChild(generateColor);
             containerElement.appendChild(dateOfCreation);
-      
+            
+            console.log(containerElement);
             document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
-
+            document.getElementById("noteContainerID" + index).style.backgroundColor = "#" + color;
         })
     
-    }
+}
 
 }) ();
