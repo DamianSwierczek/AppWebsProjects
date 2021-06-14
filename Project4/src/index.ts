@@ -41,7 +41,19 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    editElement.innerHTML = "E";
    editElement.id = "editButton" + notes.getNotes().length;
    editElement.addEventListener("click", editNote);
-   
+
+   const prioritizeElement = document.createElement("button");
+   prioritizeElement.className = "prioritizeButton";
+   prioritizeElement.innerHTML = "P";
+   prioritizeElement.id = "prioritizeButton" + notes.getNotes().length;
+   prioritizeElement.addEventListener("click", prioritizeNote);
+
+   const unprioritizeElement = document.createElement("button");
+   unprioritizeElement.className = "unprioritizeButton";
+   unprioritizeElement.innerHTML = "NP";
+   unprioritizeElement.id = "unprioritizeButton" + notes.getNotes().length;
+   unprioritizeElement.style.visibility = 'hidden';
+   unprioritizeElement.addEventListener("click", unprioritizeNote);
 
    const generateColor = document.createElement("button");
    generateColor.className = "generateColorButton";
@@ -62,6 +74,8 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
     containerElement.appendChild(contentElement);
     containerElement.appendChild(deleteElement);
     containerElement.appendChild(editElement);
+    containerElement.appendChild(prioritizeElement);
+    containerElement.appendChild(unprioritizeElement);
     containerElement.appendChild(generateColor);
     containerElement.appendChild(dateOfCreation);
 
@@ -74,8 +88,8 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
     appStorage.saveToLocalStorage();
 
+    
     document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
-
 
 });
 
@@ -107,11 +121,28 @@ function getRandColor(this: HTMLElement)
         color = "0" + color;
     }
     notes.notesArray[+index].color = color;
-    // localStorage.setItem('notesData', JSON.stringify(notes.getNotes()));
     const appStorage = new AppStorage(notes);
     appStorage.saveToLocalStorage();
     document.getElementById("noteContainerID" + index).style.backgroundColor = "#" + color;
 }
+
+function prioritizeNote(this: HTMLElement) {
+    let index = this.id.replace("prioritizeButton","");
+    console.log(index);
+    notes.getNotes()[+index].isImportant = true;
+    const appStorage = new AppStorage(notes);
+    appStorage.saveToLocalStorage();
+    window.location.reload();
+}
+
+function unprioritizeNote(this: HTMLElement) {
+    let index = this.id.replace("unprioritizeButton","");
+    console.log(index);
+    notes.getNotes()[+index].isImportant = false;
+    const appStorage = new AppStorage(notes);
+    appStorage.saveToLocalStorage();
+    window.location.reload();
+    }
 
 (function (){
 
@@ -150,6 +181,7 @@ function getRandColor(this: HTMLElement)
             editElement.innerHTML = "E";
             editElement.id = "editButton" + index;
             editElement.addEventListener("click", editNote);
+           
          
             const generateColor = document.createElement("button");
             generateColor.className = "generateColorButton";
@@ -157,9 +189,21 @@ function getRandColor(this: HTMLElement)
             generateColor.id = "generateColor" + index;
             generateColor.addEventListener("click", getRandColor);
             let color =  notes.getNotes()[index].color;
-            
-            
 
+            const prioritizeElement = document.createElement("button");
+            prioritizeElement.className = "prioritizeButton";
+             prioritizeElement.innerHTML = "P";
+            prioritizeElement.id = "prioritizeButton" + index;
+            prioritizeElement.addEventListener("click", unprioritizeNote);
+            prioritizeElement.addEventListener("click", prioritizeNote);
+
+            const unprioritizeElement = document.createElement("button");
+            unprioritizeElement.className = "unprioritizeButton";
+            unprioritizeElement.innerHTML = "NP";
+            unprioritizeElement.id = "unprioritizeButton" + index;
+            unprioritizeElement.addEventListener("click", unprioritizeNote);
+            
+             
             const dateOfCreation = document.createElement("p");
             let today = notes.getNotes()[index].date;
             dateOfCreation.innerHTML = today.toString();
@@ -169,12 +213,31 @@ function getRandColor(this: HTMLElement)
             containerElement.appendChild(contentElement);
             containerElement.appendChild(deleteElement);
             containerElement.appendChild(editElement);
+            containerElement.appendChild(prioritizeElement);
+            containerElement.appendChild(unprioritizeElement);
             containerElement.appendChild(generateColor);
             containerElement.appendChild(dateOfCreation);
+
             
             console.log(containerElement);
             document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
             document.getElementById("noteContainerID" + index).style.backgroundColor = "#" + color;
+           
+
+            if(notes.getNotes()[index].isImportant) {
+                document.getElementById('importantNotes').appendChild(
+                    document.getElementById('noteContainerID' + index)
+                  );
+                  prioritizeElement.style.visibility = 'hidden';
+            }
+
+            if(!notes.getNotes()[index].isImportant) {
+                document.getElementById('lessImportantNotes').appendChild(
+                    document.getElementById('noteContainerID' + index)
+                  );
+                  unprioritizeElement.style.visibility = 'hidden';
+            }
+            
         })
     
 }
