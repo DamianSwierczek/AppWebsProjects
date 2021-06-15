@@ -2,7 +2,13 @@ import './main.scss';
 import {Note} from './model/Note';
 import {Notes} from './model/Notes';
 import {AppStorage} from './model/AppStorage';
+import firebase from "firebase";
+import { firebaseConfig } from './model/config';
 
+if(firebaseConfig.databaseActive = 1) {
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebaseApp.firestore();
+}
 
 let notes = new Notes();
 const appStorage = new AppStorage(notes);
@@ -241,51 +247,5 @@ function unprioritizeNote(this: HTMLElement) {
         })
     
 }
-
-// import './main.scss';
-
-// import firebase from 'firebase';
-// import { firebaseConfig } from './config';
-
-// const firebaseApp = firebase.initializeApp(firebaseConfig);
-// const db = firebaseApp.firestore();
-
-// const note = {
-//     title: 'First note1',
-//     content: 'First note content from code'
-// }
-
-
-// // //adding new notes
-// // // addNote(note);
-
-// // async function addNote(note: any) {
-// //     const res = await db.collection('notes').add(note);
-// // }
-
-// // //delete notes
-// // // deleteNote('');
-// // async function deleteNote(id: string) {
-// //     const res = await db.collection('notes').doc(id).delete();
-// // }
-
-// // //update notes
-// // // updateNote('', {title: 'update note', content: 'updated note from code'})
-// // async function updateNote(id: string, note: any) {
-// //     const res = await db.collection('notes').doc(id).update(note);
-// // }
-
-// // //get note 
-// // // getNote('linj2nz1FUpPnHsJNgvj').then(res => console.log(res));
-// // async function getNote(id: string) {
-// //     return db.collection('notes').doc(id).get().then(res => ({id: res.id, data: res.data()}));
-// // }
-
-
-
-// // async function getNotes() {
-// //     return db.collection('notes').get().then (res => ({size: res.size, docs: res.docs}));
-// // }
-
 
 }) ();
