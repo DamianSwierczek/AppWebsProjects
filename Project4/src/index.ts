@@ -4,15 +4,13 @@ import {Notes} from './model/Notes';
 import {AppStorage} from './model/AppStorage';
 import firebase from "firebase";
 import { firebaseConfig } from './model/config';
-
-if(firebaseConfig.databaseActive = 1) {
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const db = firebaseApp.firestore();
-}
+import { AppFirestoreStorage } from './model/AppFirestoreStorage';
 
 let notes = new Notes();
 const appStorage = new AppStorage(notes);
 let currentColor: string;
+const appFirestoreStorage = new AppFirestoreStorage();
+const shouldUseFirestore = firebaseConfig.databaseActive;
 
 document.getElementById("addNoteButton").addEventListener("click", () => {
 
@@ -100,14 +98,16 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 });
 
 function deleteNote(this: HTMLElement) {
-    console.log(this);
+
     let index = this.id.replace("deleteButton","");
     notes.getNotes().splice(+index,1);
-    const appStorage = new AppStorage(notes);
-    appStorage.saveToLocalStorage();
-    console.log(index);
-    window.location.reload();
-
+    if(shouldUseFirestore){
+        appFirestoreStorage.saveToDatabase(notes);
+    } else {
+        const appStorage = new AppStorage(notes);
+        appStorage.saveToLocalStorage();
+    }
+    this.parentElement.remove();
 }
 
 function editNote(this: HTMLElement) {
@@ -150,15 +150,7 @@ function unprioritizeNote(this: HTMLElement) {
     window.location.reload();
     }
 
-(function (){
-
-   let notesFromStorage = JSON.parse(localStorage.getItem('notesData')) as Notes;
-
-    notes = new Notes();
-
-    console.log(notes);
-
-    Object.assign(notes , notesFromStorage);
+function createNotesUI(notes: Notes){
 
     if(notes){
         notes.getNotes().forEach((element, index) => {
@@ -226,6 +218,7 @@ function unprioritizeNote(this: HTMLElement) {
 
             
             console.log(containerElement);
+
             document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
             document.getElementById("noteContainerID" + index).style.backgroundColor = "#" + color;
            
@@ -243,9 +236,24 @@ function unprioritizeNote(this: HTMLElement) {
                   );
                   unprioritizeElement.style.visibility = 'hidden';
             }
+
             
         })
-    
+    }
 }
 
-}) ();
+(function (){
+
+    if(shouldUseFirestore){
+        appFirestoreStorage.getNotesFromDatabase().then(data => {
+            notes = new Notes();
+            Object.assign(notes , data);
+            createNotesUI(notes);
+        });
+    } else {
+         let notesFromStorage = JSON.parse(localStorage.getItem('notesData')) as Notes;
+         notes = new Notes();
+         Object.assign(notes , notesFromStorage);
+         createNotesUI(notes);
+    }    
+}());
