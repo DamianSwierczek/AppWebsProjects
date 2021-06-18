@@ -10,8 +10,8 @@ import {Notes} from './Notes';
     };
 
     saveToLocalStorage(notes: Notes): void {
-        if(this.notes){
-        localStorage.setItem('notesData', JSON.stringify(this.notes));
+        if(notes){
+        localStorage.setItem('notesData', JSON.stringify(notes));
         }
     }
 
