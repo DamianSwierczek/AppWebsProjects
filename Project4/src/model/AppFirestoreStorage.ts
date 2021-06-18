@@ -17,9 +17,9 @@ db: firebase.firestore.Firestore;
  }
 
 
- saveToDatabase(notes: Notes): void {
+    saveToDatabase(notes: Notes): void {
     if(notes){
-        this.db.collection("notes").doc("myNotes").set(Object.assign({}, notes));
+         this.db.collection("notes").doc("myNotes").set(JSON.parse(JSON.stringify(notes)));
     }
  }
 

@@ -11,8 +11,8 @@ import {Notes} from './Notes';
 
     saveToLocalStorage(notes: Notes): void {
         if(notes){
-        localStorage.setItem('notesData', JSON.stringify(notes));
-        }
+             localStorage.setItem('notesData', JSON.stringify(notes));
+                 }
     }
 
     getData() {

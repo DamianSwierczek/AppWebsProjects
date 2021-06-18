@@ -18,7 +18,6 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
    let noteContent = (document.getElementById("inputContent") as HTMLInputElement).value;
 
-   
    const containerElement = document.createElement("div");
    containerElement.className = "noteContainer";
    containerElement.id = "noteContainerID" + notes.getNotes().length;
@@ -84,14 +83,12 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    
     notes.addNote(note);
 
-    if(shouldUseFirestore){
-        console.log(notes);
-        console.log(Object.assign({}, notes));
+    if(shouldUseFirestore) {
         appFirestoreStorage.saveToDatabase(notes);
     } else {
-        appStorage.saveToLocalStorage(notes);
-    }
 
+    appStorage.saveToLocalStorage(notes);
+    }
     document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
 
 });
@@ -259,7 +256,7 @@ function createNotesUI(notes: Notes){
             notes = new Notes();
             Object.assign(notes , data);
             createNotesUI(notes);
-        })
+        });
     } else {
          let notesFromStorage = JSON.parse(localStorage.getItem('notesData')) as Notes;
          notes = new Notes();

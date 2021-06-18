@@ -10,7 +10,7 @@ export class Note {
         this.title = title;
         this.content = content;
         this.isImportant = isImportant;
-        this. date = date;
+        this.date = date;
         this.color = color;
     }
 
