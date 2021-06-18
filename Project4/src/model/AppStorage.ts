@@ -9,7 +9,7 @@ import {Notes} from './Notes';
         this.notes = notes;
     };
 
-    saveToLocalStorage(): void {
+    saveToLocalStorage(notes: Notes): void {
         if(this.notes){
         localStorage.setItem('notesData', JSON.stringify(this.notes));
         }

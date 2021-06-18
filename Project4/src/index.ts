@@ -8,7 +8,7 @@ import { AppFirestoreStorage } from './model/AppFirestoreStorage';
 
 let notes = new Notes();
 const appStorage = new AppStorage(notes);
-let currentColor: string;
+let currentColor = "nothing" as string;
 const appFirestoreStorage = new AppFirestoreStorage();
 const shouldUseFirestore = firebaseConfig.databaseActive;
 
@@ -18,9 +18,6 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
    let noteContent = (document.getElementById("inputContent") as HTMLInputElement).value;
 
-   if(!notes){
-    notes = new Notes();
-}
    
    const containerElement = document.createElement("div");
    containerElement.className = "noteContainer";
@@ -88,11 +85,12 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
    
     notes.addNote(note);
 
-    const appStorage = new AppStorage(notes);
-
-    appStorage.saveToLocalStorage();
-
-    
+    if(shouldUseFirestore){
+        console.log(notes);
+        appFirestoreStorage.saveToDatabase(notes);
+    } else {
+        appStorage.saveToLocalStorage(notes);
+    }
     document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
 
 });
@@ -104,8 +102,7 @@ function deleteNote(this: HTMLElement) {
     if(shouldUseFirestore){
         appFirestoreStorage.saveToDatabase(notes);
     } else {
-        const appStorage = new AppStorage(notes);
-        appStorage.saveToLocalStorage();
+        appStorage.saveToLocalStorage(notes);
     }
     this.parentElement.remove();
 }
@@ -113,10 +110,12 @@ function deleteNote(this: HTMLElement) {
 function editNote(this: HTMLElement) {
     let index = this.id.replace("editButton","");
     let noteContent = (document.getElementById("contentID" + index) as HTMLInputElement).value;
-    console.log(index);
     notes.getNotes()[+index].content = noteContent;
-    const appStorage = new AppStorage(notes);
-    appStorage.saveToLocalStorage();
+    if(shouldUseFirestore){
+        appFirestoreStorage.saveToDatabase(notes);
+    } else {
+        appStorage.saveToLocalStorage(notes);
+    }
 }
 
 function getRandColor(this: HTMLElement)
@@ -127,8 +126,12 @@ function getRandColor(this: HTMLElement)
         color = "0" + color;
     }
     notes.notesArray[+index].color = color;
-    const appStorage = new AppStorage(notes);
-    appStorage.saveToLocalStorage();
+
+    if(shouldUseFirestore){
+        appFirestoreStorage.saveToDatabase(notes);
+    } else {
+        appStorage.saveToLocalStorage(notes);
+    }
     document.getElementById("noteContainerID" + index).style.backgroundColor = "#" + color;
 }
 
@@ -136,8 +139,11 @@ function prioritizeNote(this: HTMLElement) {
     let index = this.id.replace("prioritizeButton","");
     console.log(index);
     notes.getNotes()[+index].isImportant = true;
-    const appStorage = new AppStorage(notes);
-    appStorage.saveToLocalStorage();
+    if(shouldUseFirestore){
+        appFirestoreStorage.saveToDatabase(notes);
+    } else {
+        appStorage.saveToLocalStorage(notes);
+    }
     window.location.reload();
 }
 
@@ -145,8 +151,11 @@ function unprioritizeNote(this: HTMLElement) {
     let index = this.id.replace("unprioritizeButton","");
     console.log(index);
     notes.getNotes()[+index].isImportant = false;
-    const appStorage = new AppStorage(notes);
-    appStorage.saveToLocalStorage();
+    if(shouldUseFirestore){
+        appFirestoreStorage.saveToDatabase(notes);
+    } else {
+        appStorage.saveToLocalStorage(notes);
+    }
     window.location.reload();
     }
 

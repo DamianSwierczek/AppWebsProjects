@@ -8,8 +8,8 @@ constructor(){
     this.notesArray = Array<Note>();
 }
   addNote(note: Note){
-    console.log(this.notesArray);
     this.notesArray.push(note);
+    console.log(this.notesArray);
 }
 
 getNotes(): Note[]{

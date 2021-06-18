@@ -24,8 +24,8 @@ db: firebase.firestore.Firestore;
  }
 
  async getNotesFromDatabase(): Promise<firebase.firestore.DocumentData> {
-   const cityRef = this.db.collection('notes').doc('myNotes');
-   const doc = await cityRef.get();
+   const noteRef = this.db.collection('notes').doc('myNotes');
+   const doc = await noteRef.get();
    if (!doc.exists) {
      console.log('No such document!');
    } else {
