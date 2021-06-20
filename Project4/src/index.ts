@@ -142,7 +142,7 @@ function prioritizeNote(this: HTMLElement) {
     } else {
         appStorage.saveToLocalStorage(notes);
     }
-    window.location.reload();
+    document.getElementById("importantNotes").appendChild(this.parentElement)
 }
 
 function unprioritizeNote(this: HTMLElement) {
@@ -153,8 +153,8 @@ function unprioritizeNote(this: HTMLElement) {
         appFirestoreStorage.saveToDatabase(notes);
     } else {
         appStorage.saveToLocalStorage(notes);
-    }
-    window.location.reload();
+        }
+        document.getElementById("lessImportantNotes").appendChild(this.parentElement)
     }
 
 function createNotesUI(notes: Notes){
