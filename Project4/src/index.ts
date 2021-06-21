@@ -94,7 +94,7 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
 
 });
 
-function deleteNote(this: HTMLElement) {
+export function deleteNote(this: HTMLElement) {
 
     let index = this.id.replace("deleteButton","");
     notes.getNotes().splice(+index,1);
