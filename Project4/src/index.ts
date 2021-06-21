@@ -90,6 +90,7 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
     appStorage.saveToLocalStorage(notes);
     }
     document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
+    
 
 });
 
@@ -143,6 +144,10 @@ function prioritizeNote(this: HTMLElement) {
         appStorage.saveToLocalStorage(notes);
     }
     document.getElementById("importantNotes").appendChild(this.parentElement)
+    let notePriorityButton = (document.getElementById("prioritizeButton" + index) as HTMLInputElement);
+    let noteUnpriorityButton = (document.getElementById("unprioritizeButton" + index) as HTMLInputElement);
+    notePriorityButton.style.visibility = "hidden";
+    noteUnpriorityButton.style.visibility = "visible";
 }
 
 function unprioritizeNote(this: HTMLElement) {
@@ -153,8 +158,12 @@ function unprioritizeNote(this: HTMLElement) {
         appFirestoreStorage.saveToDatabase(notes);
     } else {
         appStorage.saveToLocalStorage(notes);
-        }
-        document.getElementById("lessImportantNotes").appendChild(this.parentElement)
+           }
+    document.getElementById("lessImportantNotes").appendChild(this.parentElement)
+    let notePriorityButton = (document.getElementById("prioritizeButton" + index) as HTMLInputElement);
+    let noteUnpriorityButton = (document.getElementById("unprioritizeButton" + index) as HTMLInputElement);
+    noteUnpriorityButton.style.visibility = "hidden";
+    notePriorityButton.style.visibility = "visible";
     }
 
 function createNotesUI(notes: Notes){
