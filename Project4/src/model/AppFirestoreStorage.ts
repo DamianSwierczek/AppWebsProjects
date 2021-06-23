@@ -1,8 +1,9 @@
 import firebase from "firebase";
 import { firebaseConfig } from "./config";
+import { IAppStorage } from "./interfaces/IAppStorage";
 import { Notes } from "./Notes";
 
-export class AppFirestoreStorage {
+export class AppFirestoreStorage implements IAppStorage{
 
 db: firebase.firestore.Firestore;
  
@@ -17,13 +18,13 @@ db: firebase.firestore.Firestore;
  }
 
 
-    saveToDatabase(notes: Notes): void {
+    saveToStorage(notes: Notes): void {
     if(notes){
          this.db.collection("notes").doc("myNotes").set(JSON.parse(JSON.stringify(notes)));
     }
  }
 
- async getNotesFromDatabase(): Promise<firebase.firestore.DocumentData> {
+ async getData(): Promise<firebase.firestore.DocumentData> {
    const noteRef = this.db.collection('notes').doc('myNotes');
    const doc = await noteRef.get();
    if (!doc.exists) {

@@ -1,7 +1,8 @@
 
+import { IAppStorage } from './interfaces/IAppStorage';
 import {Notes} from './Notes';
 
- export class AppStorage {
+ export class AppStorage implements IAppStorage {
     
      notes: Notes;
 
@@ -9,7 +10,7 @@ import {Notes} from './Notes';
         this.notes = notes;
     };
 
-    saveToLocalStorage(notes: Notes): void {
+    saveToStorage(notes: Notes): void {
         if(notes){
              localStorage.setItem('notesData', JSON.stringify(notes));
                  }

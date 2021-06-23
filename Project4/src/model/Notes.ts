@@ -9,7 +9,6 @@ constructor(){
 }
   addNote(note: Note){
     this.notesArray.push(note);
-    console.log(this.notesArray);
 }
 
 getNotes(): Note[]{

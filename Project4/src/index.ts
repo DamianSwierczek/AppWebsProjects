@@ -5,11 +5,12 @@ import {AppStorage} from './model/AppStorage';
 import firebase from "firebase";
 import { firebaseConfig } from './model/config';
 import { AppFirestoreStorage } from './model/AppFirestoreStorage';
+import { IAppStorage } from './model/interfaces/IAppStorage';
 
 let notes = new Notes();
-const appStorage = new AppStorage(notes);
+const appStorage: IAppStorage = new AppStorage(notes);
 let currentColor = "nothing" as string;
-const appFirestoreStorage = new AppFirestoreStorage();
+const appFirestoreStorage: IAppStorage = new AppFirestoreStorage();
 const shouldUseFirestore = firebaseConfig.databaseActive;
 
 document.getElementById("addNoteButton").addEventListener("click", () => {
@@ -84,10 +85,10 @@ document.getElementById("addNoteButton").addEventListener("click", () => {
     notes.addNote(note);
 
     if(shouldUseFirestore) {
-        appFirestoreStorage.saveToDatabase(notes);
+        appFirestoreStorage.saveToStorage(notes);
     } else {
 
-    appStorage.saveToLocalStorage(notes);
+    appStorage.saveToStorage(notes);
     }
     document.getElementsByClassName("lessImportantNotes")[0].appendChild(containerElement);
     
@@ -99,9 +100,9 @@ export function deleteNote(this: HTMLElement) {
     let index = this.id.replace("deleteButton","");
     notes.getNotes().splice(+index,1);
     if(shouldUseFirestore){
-        appFirestoreStorage.saveToDatabase(notes);
+        appFirestoreStorage.saveToStorage(notes);
     } else {
-        appStorage.saveToLocalStorage(notes);
+        appStorage.saveToStorage(notes);
     }
     this.parentElement.remove();
 }
@@ -111,9 +112,9 @@ function editNote(this: HTMLElement) {
     let noteContent = (document.getElementById("contentID" + index) as HTMLInputElement).value;
     notes.getNotes()[+index].content = noteContent;
     if(shouldUseFirestore){
-        appFirestoreStorage.saveToDatabase(notes);
+        appFirestoreStorage.saveToStorage(notes);
     } else {
-        appStorage.saveToLocalStorage(notes);
+        appStorage.saveToStorage(notes);
     }
 }
 
@@ -127,9 +128,9 @@ function getRandColor(this: HTMLElement)
     notes.notesArray[+index].color = color;
 
     if(shouldUseFirestore){
-        appFirestoreStorage.saveToDatabase(notes);
+        appFirestoreStorage.saveToStorage(notes);
     } else {
-        appStorage.saveToLocalStorage(notes);
+        appStorage.saveToStorage(notes);
     }
     document.getElementById("noteContainerID" + index).style.backgroundColor = "#" + color;
 }
@@ -139,9 +140,9 @@ function prioritizeNote(this: HTMLElement) {
     console.log(index);
     notes.getNotes()[+index].isImportant = true;
     if(shouldUseFirestore){
-        appFirestoreStorage.saveToDatabase(notes);
+        appFirestoreStorage.saveToStorage(notes);
     } else {
-        appStorage.saveToLocalStorage(notes);
+        appStorage.saveToStorage(notes);
     }
     document.getElementById("importantNotes").appendChild(this.parentElement)
     let notePriorityButton = (document.getElementById("prioritizeButton" + index) as HTMLInputElement);
@@ -155,9 +156,9 @@ function unprioritizeNote(this: HTMLElement) {
     console.log(index);
     notes.getNotes()[+index].isImportant = false;
     if(shouldUseFirestore){
-        appFirestoreStorage.saveToDatabase(notes);
+        appFirestoreStorage.saveToStorage(notes);
     } else {
-        appStorage.saveToLocalStorage(notes);
+        appStorage.saveToStorage(notes);
            }
     document.getElementById("lessImportantNotes").appendChild(this.parentElement)
     let notePriorityButton = (document.getElementById("prioritizeButton" + index) as HTMLInputElement);
@@ -261,7 +262,7 @@ function createNotesUI(notes: Notes){
 (function (){
 
     if(shouldUseFirestore){
-        appFirestoreStorage.getNotesFromDatabase().then(data => {
+        appFirestoreStorage.getData().then(data => {
             notes = new Notes();
             Object.assign(notes , data);
             createNotesUI(notes);
